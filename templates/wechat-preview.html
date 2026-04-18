@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公众号文章预览</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f0f0;
+      padding: 40px 20px;
+      line-height: 1.8;
+    }
+
+    .article-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .article-container {
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Article Header */
+    .article-header {
+      padding: 40px 50px 30px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .article-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #42b983, #3da87d);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .article-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .article-subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .author-avatar-small {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #42b983, #3da87d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Article Content */
+    .article-content {
+      padding: 35px 50px 40px;
+      font-size: 16px;
+      color: #333;
+      line-height: 1.9;
+    }
+
+    .article-content p {
+      margin-bottom: 20px;
+      text-align: justify;
+      text-indent: 2em;
+    }
+
+    .article-content h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 40px 0 20px 0;
+      padding-left: 16px;
+      border-left: 4px solid #42b983;
+      line-height: 1.4;
+    }
+
+    .article-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin: 30px 0 15px 0;
+    }
+
+    .article-content blockquote {
+      background: #f8f9fa;
+      border-left: 4px solid #42b983;
+      padding: 20px 24px;
+      margin: 24px 0;
+      color: #555;
+      font-style: normal;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .article-content blockquote p {
+      margin-bottom: 0;
+      text-indent: 0;
+    }
+
+    .article-content blockquote strong {
+      color: #42b983;
+      font-weight: 600;
+    }
+
+    .article-content hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 40px 0;
+    }
+
+    .article-content ul, .article-content ol {
+      margin: 20px 0;
+      padding-left: 28px;
+    }
+
+    .article-content li {
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+
+    .highlight-box p {
+      margin-bottom: 0;
+      text-indent: 0;
+      color: #166534;
+    }
+
+    /* Callout */
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout-icon {
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .callout-content {
+      flex: 1;
+    }
+
+    .callout-content p {
+      margin-bottom: 0;
+      text-indent: 0;
+      color: #92400e;
+    }
+
+    /* Article Footer */
+    .article-footer {
+      padding: 30px 50px 40px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .interaction-guide {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .interaction-guide p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .interaction-guide .action {
+      color: #42b983;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .follow-guide {
+      background: linear-gradient(135deg, #42b983, #3da87d);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .follow-guide p {
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .follow-guide .highlight-text {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .follow-guide .sub-text {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 0;
+    }
+
+    /* QR Code */
+    .qr-section {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px dashed #e5e5e5;
+    }
+
+    .qr-placeholder {
+      width: 120px;
+      height: 120px;
+      background: #f5f5f5;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 12px;
+      border: 1px dashed #ddd;
+      border-radius: 8px;
+    }
+
+    .qr-hint {
+      font-size: 13px;
+      color: #999;
+    }
+
+    /* Copyright */
+    .copyright {
+      text-align: center;
+      padding: 20px 50px;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="article-wrapper">
+    <div class="article-container">
+      <!-- Header -->
+      <div class="article-header">
+        <span class="article-tag">成长干货</span>
+        <h1 class="article-title">5句话，治好了我的"早晨失控焦虑"</h1>
+        <p class="article-subtitle">来源：YouTube视频《The Perfect Morning Habits That Change Your Life》</p>
+        <div class="article-meta">
+          <div class="meta-item">
+            <div class="author-avatar-small">A</div>
+            <span>成长笔记</span>
+          </div>
+          <div class="meta-item">
+            <span>📅</span>
+            <span>2026年4月18日</span>
+          </div>
+          <div class="meta-item">
+            <span>⏱</span>
+            <span>阅读 5 分钟</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="article-content">
+        <p>最近看了一个关于晨间习惯的视频，全程3分钟，我记下了最戳我的5句话。</p>
+        <p>每一句，都像是对我之前赖床、刷手机、拖延的精准回答。</p>
+
+        <hr>
+
+        <h2>1.「如果你的早晨失控，你的人生就在一点点崩塌。」</h2>
+        <p>我们总以为改变人生需要一个大事件。</p>
+        <p>但视频里说：不是某一天突然崩溃，而是每天早晨都在流失。赖床一分钟，刷手机十分钟，拖延一小时——你的早晨就这样没了。</p>
+
+        <div class="highlight-box">
+          <p>💡 核心观点：人生不是突然崩塌的，而是每天早晨都在流失</p>
+        </div>
+
+        <h2>2.「固定起床时间，不找借口，不赖床。」</h2>
+        <p>不管昨晚几点睡，不管累不累，闹钟响了就起床。</p>
+        <p>因为一旦允许例外，大脑就会认为自律是可选的。但当你每天同一时间醒来，你的生物钟会自动调整，入睡自然提前。</p>
+
+        <blockquote>
+          <p><strong>实践方法：</strong>选定一个固定起床时间，闹钟响了就起床，不赖床、不刷手机。坚持30天，你的生物钟会自然调整。</p>
+        </blockquote>
+
+        <h2>3.「起床后立刻动起来，不要坐着刷手机。」</h2>
+        <p>运动是唤醒身体和大脑最有效的方式。</p>
+        <p>跑步、俯卧撑、深蹲，哪怕20分钟。运动后你会发现：困难的任务变简单了，自律的人都是先动起来的。</p>
+
+        <div class="callout">
+          <span class="callout-icon">⚡</span>
+          <div class="callout-content">
+            <p>关键洞察：运动能提升精力，让困难任务变得更容易处理</p>
+          </div>
+        </div>
+
+        <h2>4.「上午11点前，完成你最重要的工作。」</h2>
+        <p>早餐后身心都处于最佳状态，这是注意力最集中的时段。</p>
+        <p>关掉手机，一次做一件事，把最难的任务优先完成。把硬骨头在上午啃掉，剩下的时间都会轻松很多。</p>
+
+        <h2>5.「控制早晨，你的日子就会自然步入正轨。」</h2>
+        <p>这些习惯看似简单，但只有在每天坚持时才有效。</p>
+        <p>不追求完美，追求持续。你的早晨决定你的自律，你的自律决定你的人生。</p>
+
+        <hr>
+
+        <h2>写在最后</h2>
+        <p>从明天开始，选一个固定起床时间，闹钟响了就起来。</p>
+        <p>不需要等到"完美的时机"——从明天早晨开始就够了。</p>
+
+        <div class="highlight-box">
+          <p>✨ 这一个选择，就能改变一切</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="article-footer">
+        <div class="interaction-guide">
+          <p>如果这篇文章对你有帮助</p>
+          <p class="action">欢迎点赞、在看、转发给朋友</p>
+        </div>
+
+        <div class="follow-guide">
+          <p>觉得有用就关注我吧</p>
+          <p class="highlight-text">每周分享实用的成长干货</p>
+          <p class="sub-text">与你一起每天进步一点点</p>
+        </div>
+
+        <div class="qr-section">
+          <div class="qr-placeholder">二维码区域</div>
+          <p class="qr-hint">扫码关注公众号</p>
+        </div>
+      </div>
+
+      <div class="copyright">
+        本文由视频字幕翻译整理，内容版权归原作者所有
+      </div>
+    </div>
+  </div>
+</body>
+</html>

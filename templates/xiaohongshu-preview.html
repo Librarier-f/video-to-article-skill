@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小红书笔记预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      padding: 40px 20px;
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .preview-container {
+      max-width: 390px;
+      width: 100%;
+      background: #1a1a1a;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Status Bar */
+    .status-bar {
+      background: #1a1a1a;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .status-bar .time {
+      font-weight: 600;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* Phone Header */
+    .phone-header {
+      background: #1a1a1a;
+      padding: 12px 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: #333;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-right: 40px;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 20px;
+      background: #1a1a1a;
+    }
+
+    /* Author Info */
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .author-details {
+      flex: 1;
+    }
+
+    .author-name {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .author-time {
+      color: #666;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .follow-btn {
+      background: linear-gradient(135deg, #ff2442, #ff6b6b);
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Title */
+    .note-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    /* Note Content */
+    .note-content {
+      font-size: 15px;
+      color: #ccc;
+      line-height: 1.85;
+    }
+
+    .note-content p {
+      margin-bottom: 14px;
+    }
+
+    .highlight {
+      color: #ff6b6b;
+    }
+
+    /* Tags */
+    .tags {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      background: rgba(255, 36, 66, 0.15);
+      color: #ff6b6b;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Image Placeholder */
+    .image-placeholder {
+      margin-top: 16px;
+      background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-size: 14px;
+    }
+
+    /* Interaction Bar */
+    .interaction-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+      margin-top: 20px;
+    }
+
+    .interaction-left {
+      display: flex;
+      gap: 24px;
+    }
+
+    .interaction-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .interaction-item.liked {
+      color: #ff2442;
+    }
+
+    .interaction-icon {
+      font-size: 20px;
+    }
+
+    /* Comment Section */
+    .comment-section {
+      margin-top: 16px;
+    }
+
+    .comment-hint {
+      color: #555;
+      font-size: 14px;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      background: #1a1a1a;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #333;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #666;
+      font-size: 10px;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+    }
+
+    .nav-item.active {
+      color: #ff2442;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="status-icons">
+        <span>📶</span>
+        <span>🔥</span>
+        <span>🔋</span>
+      </div>
+    </div>
+
+    <!-- Phone Header -->
+    <div class="phone-header">
+      <button class="back-btn">←</button>
+      <span class="phone-title">小红书</span>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Author -->
+      <div class="author-info">
+        <div class="author-avatar">A</div>
+        <div class="author-details">
+          <div class="author-name">成长笔记</div>
+          <div class="author-time">今天 9:30</div>
+        </div>
+        <button class="follow-btn">关注</button>
+      </div>
+
+      <!-- Title -->
+      <div class="note-title">改变人生的5个晨间习惯，建议收藏！</div>
+
+      <!-- Content -->
+      <div class="note-content">
+        <p>建议所有想改变自己的朋友收藏这篇！</p>
+        <p>为什么晨间习惯能改变人生？<br>视频说：如果你的早晨失控，你的人生就在一点点崩塌。</p>
+        <p><span class="highlight">5个立刻能用的晨间习惯：</span></p>
+        <p><span class="highlight">第一步：固定起床时间</span><br>选定一个固定起床时间，每天同一时间醒来。</p>
+        <p><span class="highlight">第二步：起床后立刻动起来</span><br>醒来后先喝一杯水，然后不要坐着刷手机。</p>
+        <p><span class="highlight">第三步：吃简单健康的早餐</span><br>运动后身体需要正确的燃料。</p>
+        <p><span class="highlight">第四步：上午11点前完成最重要的工作</span></p>
+        <p><span class="highlight">第五步：每天坚持</span></p>
+        <p>控制早晨，就能控制人生</p>
+      </div>
+
+      <!-- Image Placeholder -->
+      <div class="image-placeholder">📷 点击查看图片</div>
+
+      <!-- Tags -->
+      <div class="tags">
+        <span class="tag">#自我提升</span>
+        <span class="tag">#晨间习惯</span>
+        <span class="tag">#自律</span>
+        <span class="tag">#时间管理</span>
+        <span class="tag">#成长干货</span>
+      </div>
+
+      <!-- Interaction Bar -->
+      <div class="interaction-bar">
+        <div class="interaction-left">
+          <div class="interaction-item liked">
+            <span class="interaction-icon">❤️</span>
+            <span>2.3万</span>
+          </div>
+          <div class="interaction-item">
+            <span class="interaction-icon">💬</span>
+            <span>1286</span>
+          </div>
+          <div class="interaction-item">
+            <span class="interaction-icon">⭐</span>
+            <span>收藏</span>
+          </div>
+        </div>
+        <div class="interaction-item">
+          <span class="interaction-icon">↗️</span>
+          <span>分享</span>
+        </div>
+      </div>
+
+      <!-- Comment Hint -->
+      <div class="comment-section">
+        <div class="comment-hint">写评论...</div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+      <div class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span>首页</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">🔍</span>
+        <span>搜索</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">➕</span>
+        <span>发布</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span>消息</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-icon">👤</span>
+        <span>我的</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

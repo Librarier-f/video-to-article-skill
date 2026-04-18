@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暗黑科技风格 - Video to Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void-black: #050508;
+      --deep-space: #0a0a0f;
+      --neural-gray: #12121a;
+      --cyber-dark: #1a1a2e;
+      --matrix-green: #00ff41;
+      --neon-cyan: #00f0ff;
+      --plasma-purple: #b24bf3;
+      --alert-red: #ff0055;
+      --data-white: #e0e0e0;
+      --muted-gray: #6b6b7b;
+      --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.5);
+      --glow-green: 0 0 20px rgba(0, 255, 65, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+      background: var(--deep-space);
+      color: var(--data-white);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* Grid Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Scan Line */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1001;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      opacity: 0.3;
+    }
+
+    ::selection { background: var(--neon-cyan); color: var(--void-black); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(178, 75, 243, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--neon-cyan);
+      margin-bottom: 2.5rem;
+      text-shadow: var(--glow-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero h1 .highlight {
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--muted-gray);
+      max-width: 480px;
+      margin-bottom: 3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted-gray);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--neon-cyan), transparent);
+      animation: scanline 2s ease-in-out infinite;
+    }
+
+    @keyframes scanline {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Intro */
+    .intro {
+      padding: 6rem 0 4rem;
+    }
+
+    .intro p {
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--data-white);
+      text-align: justify;
+    }
+
+    .intro p:first-of-type::first-letter {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      float: left;
+      line-height: 1;
+      margin-right: 0.5rem;
+      margin-top: 0.1rem;
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    /* Quote */
+    .quote-block {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(178, 75, 243, 0.05));
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-left: 3px solid var(--neon-cyan);
+      padding: 2rem;
+      margin: 3rem 0;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '//';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      color: var(--neon-cyan);
+      background: var(--deep-space);
+      padding: 0 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .quote-block blockquote {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.7;
+      color: var(--data-white);
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted-gray);
+      font-style: normal;
+    }
+
+    /* Section */
+    .section { padding: 4rem 0; }
+
+    .section-header { margin-bottom: 2.5rem; }
+
+    .section-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--plasma-purple);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--data-white);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Method */
+    .method {
+      background: var(--neural-gray);
+      border: 1px solid rgba(0, 240, 255, 0.1);
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .method:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+    }
+
+    .method-number {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--matrix-green);
+      opacity: 0.15;
+      line-height: 1;
+      text-shadow: var(--glow-green);
+    }
+
+    .method-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--plasma-purple));
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .method-icon svg { width: 22px; height: 22px; stroke: var(--void-black); fill: none; stroke-width: 2; }
+
+    .method h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--data-white);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .method p {
+      color: var(--muted-gray);
+      line-height: 1.85;
+      font-size: 0.95rem;
+    }
+
+    .highlight-box {
+      background: rgba(0, 240, 255, 0.05);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-left: 3px solid var(--neon-cyan);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--data-white);
+    }
+
+    /* Summary */
+    .summary {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--neural-gray), var(--cyber-dark));
+      border-top: 1px solid rgba(0, 240, 255, 0.2);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      text-shadow: var(--glow-cyan);
+    }
+
+    .summary p {
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      color: var(--muted-gray);
+      line-height: 1.8;
+    }
+
+    .takeaway {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      padding: 1rem 2.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--void-black);
+      background: linear-gradient(135deg, var(--neon-cyan), var(--plasma-purple));
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    /* Footer */
+    .footer {
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(0, 240, 255, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer p {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      color: var(--muted-gray);
+      letter-spacing: 0.1em;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .method { padding: 1.5rem; clip-path: none; border-radius: 4px; }
+      .method-number { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="hero-tag">示例文章 · Cyber Tech</span>
+    <h1>暗黑<span class="highlight">科技</span>风格</h1>
+    <p class="hero-subtitle">展示 Video to Article 生成的暗黑科技风格排版效果，赛博朋克风格，未来感十足</p>
+    <div class="scroll-hint">开始阅读</div>
+  </header>
+
+  <article class="container">
+    <section class="intro reveal">
+      <p>这是示例文章的引言部分。首字会自动下沉并着色，营造编辑感强的视觉效果。Video to Article 支持生成暗黑科技风格的文章，专为技术场景设计。</p>
+      <br>
+      <p>暗黑科技风格以深邃的黑色为主，搭配霓虹光效，适合技术教程和极客风格内容。</p>
+    </section>
+
+    <div class="quote-block reveal">
+      <blockquote>将视频内容转化为深度阅读体验，让知识沉淀更高效。</blockquote>
+      <cite>— Video to Article</cite>
+    </div>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <span class="section-label">Feature</span>
+        <h2 class="section-title">核心功能</h2>
+      </div>
+
+      <div class="method">
+        <span class="method-number">01</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <h3>多平台视频支持</h3>
+        <p>支持 YouTube、Bilibili、Twitter/X、Vimeo 等主流视频平台，自动检测并下载字幕内容。</p>
+        <div class="highlight-box">
+          <p>使用 yt-dlp 作为后端，支持手动字幕和自动生成字幕，优先选择质量更高的字幕。</p>
+        </div>
+        <p>对于 B站视频会自动检测 CC 字幕；对于 YouTube 视频，支持多语言字幕选择。</p>
+      </div>
+
+      <div class="method">
+        <span class="method-number">02</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <h3>智能翻译与整理</h3>
+        <p>英文字幕自动翻译为流畅的中文，并根据内容自动整理为结构清晰的文章格式。</p>
+        <p>翻译不仅仅是字面转换，而是会根据上下文语境进行调整，使文章更加通顺易读。</p>
+      </div>
+
+      <div class="method">
+        <span class="method-number">03</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>精美排版设计</h3>
+        <p>提供多种文章风格选择：蓝白商务、Notion深色、Claude风格、暗黑科技、极简现代。</p>
+        <div class="highlight-box">
+          <p>所有生成的 HTML 都支持响应式布局，在手机、平板、电脑上都能获得良好的阅读体验。</p>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <section class="summary reveal">
+    <h2>开始使用</h2>
+    <p>安装 yt-dlp（已内置），然后在 Claude Code 中输入视频链接，即可自动生成精美文章。</p>
+    <span class="takeaway">视频转文章，一键搞定</span>
+  </section>
+
+  <footer class="footer">
+    <p>Generated by Video to Article Skill</p>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+          el.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+  </script>
+</body>
+</html>

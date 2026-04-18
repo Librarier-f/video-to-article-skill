@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>极简现代风格 - Video to Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --ink-light: #6b6b6b;
+      --ink-muted: #999999;
+      --paper: #fefefe;
+      --paper-warm: #f9f7f5;
+      --accent: #2d5a4a;
+      --accent-light: #3d7a6a;
+      --serif: 'Noto Serif SC', 'Cormorant Garamond', Georgia, serif;
+      --serif-display: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 19px;
+    }
+
+    body {
+      font-family: var(--serif);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--ink-muted));
+    }
+
+    .overline {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-family: var(--serif-display);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1.15;
+      max-width: 14ch;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--ink-light);
+      max-width: 38ch;
+      line-height: 1.7;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--ink-muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: var(--ink-muted);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Article */
+    article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .prose {
+      padding: 6rem 0;
+    }
+
+    .prose p {
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--ink);
+      margin-bottom: 1.75em;
+    }
+
+    .prose p:first-of-type::first-letter {
+      font-family: var(--serif-display);
+      font-size: 4rem;
+      float: left;
+      line-height: 0.85;
+      margin-right: 0.3rem;
+      margin-top: 0.15rem;
+      color: var(--accent);
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--ink-muted);
+      opacity: 0.3;
+    }
+
+    .divider span {
+      padding: 0 1.5rem;
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+    }
+
+    /* Blockquote */
+    blockquote {
+      margin: 4rem 0;
+      padding: 3rem;
+      background: var(--paper-warm);
+      text-align: center;
+      position: relative;
+    }
+
+    blockquote::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    blockquote p {
+      font-family: var(--serif-display);
+      font-size: 1.35rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    blockquote cite {
+      display: block;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      font-style: normal;
+      letter-spacing: 0.15em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+
+    /* Section */
+    .section {
+      padding: 5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-number {
+      display: inline-block;
+      font-family: var(--serif-display);
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--serif-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* Card */
+    .card {
+      background: var(--paper-warm);
+      padding: 2.5rem 3rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+    }
+
+    .card h3 {
+      font-family: var(--serif-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--ink-light);
+      margin-bottom: 1.25rem;
+    }
+
+    .highlight-box {
+      background: var(--paper);
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+      border-left: 2px solid var(--accent);
+    }
+
+    .highlight-box p {
+      font-size: 0.95rem;
+      color: var(--ink);
+      margin: 0;
+      font-style: italic;
+    }
+
+    /* Insight */
+    .insight {
+      background: var(--ink);
+      color: white;
+      padding: 4rem 3rem;
+      margin: 5rem -2rem;
+      text-align: center;
+    }
+
+    .insight-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .insight h3 {
+      font-family: var(--serif-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .insight p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+    }
+
+    /* Summary */
+    .summary {
+      padding: 5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .summary h2 {
+      font-family: var(--serif-display);
+      font-size: 1.75rem;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .summary-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--ink-light);
+    }
+
+    .summary-item:nth-child(odd) {
+      padding-right: 2rem;
+      border-right: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .summary-item:nth-child(even) {
+      padding-left: 2rem;
+    }
+
+    .summary-item strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .summary-item .num {
+      display: inline-block;
+      font-family: var(--serif-display);
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-right: 0.5rem;
+    }
+
+    .cta-box {
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .cta {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--ink);
+      color: white;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .cta:hover {
+      background: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .summary-item:nth-child(odd) {
+        padding-right: 0;
+        border-right: none;
+      }
+      .summary-item:nth-child(even) {
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      html { font-size: 17px; }
+      article { padding: 0 1.5rem; }
+      .insight {
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding: 3rem 1.5rem;
+      }
+      .card { padding: 2rem; }
+      .prose p:first-of-type::first-letter { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="overline">示例文章 · 极简现代</span>
+    <h1>极简<em>现代</em>风格</h1>
+    <p class="hero-subtitle">展示 Video to Article 生成的极简现代风格排版效果，极致留白，优雅阅读</p>
+    <div class="scroll-indicator">阅读</div>
+  </header>
+
+  <article>
+    <section class="prose reveal">
+      <p>这是示例文章的引言部分。首字会自动下沉并着色，营造编辑感强的视觉效果。Video to Article 支持生成极简现代风格的文章，追求极致的留白与纯粹的排版。</p>
+      <p>极简现代风格去除所有不必要的装饰，让内容成为唯一的主角。灵感来源于瑞士平面设计、日本极简主义与高端杂志排版。</p>
+    </section>
+
+    <div class="divider"><span>引言</span></div>
+
+    <blockquote class="reveal">
+      <p>将视频内容转化为深度阅读体验，让知识沉淀更高效。</p>
+      <cite>— Video to Article</cite>
+    </blockquote>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <span class="section-number">一</span>
+        <h2 class="section-title">核心功能</h2>
+      </div>
+
+      <div class="card">
+        <h3>多平台视频支持</h3>
+        <p>支持 YouTube、Bilibili、Twitter/X、Vimeo 等主流视频平台，自动检测并下载字幕内容。</p>
+        <div class="highlight-box">
+          <p>使用 yt-dlp 作为后端，支持手动字幕和自动生成字幕，优先选择质量更高的字幕。</p>
+        </div>
+        <p>对于 B站视频会自动检测 CC 字幕；对于 YouTube 视频，支持多语言字幕选择。</p>
+      </div>
+
+      <div class="card">
+        <h3>智能翻译与整理</h3>
+        <p>英文字幕自动翻译为流畅的中文，并根据内容自动整理为结构清晰的文章格式。</p>
+        <p>翻译不仅仅是字面转换，而是会根据上下文语境进行调整，使文章更加通顺易读。</p>
+      </div>
+
+      <div class="card">
+        <h3>精美排版设计</h3>
+        <p>提供多种文章风格选择：蓝白商务、Notion深色、Claude风格、暗黑科技、极简现代。</p>
+        <div class="highlight-box">
+          <p>所有生成的 HTML 都支持响应式布局，在手机、平板、电脑上都能获得良好的阅读体验。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="insight reveal">
+      <span class="insight-label">核心理念</span>
+      <h3>留白即设计<br>字体即装饰</h3>
+      <p>— 极简现代</p>
+    </div>
+
+    <section class="summary reveal">
+      <h2>开始使用</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="num">一</span><strong>安装 Skill</strong> — 复制到 Claude Code 目录
+        </div>
+        <div class="summary-item">
+          <span class="num">二</span><strong>发送链接</strong> — 输入视频链接即可
+        </div>
+      </div>
+      <div class="cta-box">
+        <a href="#" class="cta">视频转文章</a>
+      </div>
+    </section>
+  </article>
+
+  <footer>
+    <p>Generated by Video to Article Skill</p>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    );
+    revealElements.forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

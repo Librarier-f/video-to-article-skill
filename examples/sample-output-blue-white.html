@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蓝白商务风格 - Video to Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0369A1;
+      --primary-light: #0EA5E9;
+      --primary-dark: #0C4A6E;
+      --accent: #22C55E;
+      --accent-gold: #FCD34D;
+      --background: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-alt: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --border-light: #F1F5F9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    ::selection { background: var(--primary); color: white; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.9;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.1) 0%, transparent 60%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.25;
+      max-width: 16ch;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+    }
+
+    .scroll-hint svg { animation: bounce 2s ease infinite; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Intro */
+    .intro {
+      padding: 6rem 0 4rem;
+    }
+
+    .intro p {
+      font-size: 1.1rem;
+      line-height: 2;
+      color: var(--text-secondary);
+      text-align: justify;
+    }
+
+    .intro p:first-of-type::first-letter {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 3.5rem;
+      float: left;
+      line-height: 1;
+      margin-right: 0.5rem;
+      margin-top: 0.1rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Quote */
+    .quote-block {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-left: 4px solid var(--primary);
+      padding: 2.5rem 2rem;
+      margin: 3rem 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      line-height: 1.7;
+      color: var(--text-primary);
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: normal;
+    }
+
+    /* Section */
+    .section { padding: 4rem 0; }
+
+    .section-header {
+      margin-bottom: 2.5rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: block;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: 2px;
+    }
+
+    /* Method Card */
+    .method {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .method:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(3, 105, 161, 0.12);
+    }
+
+    .method-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      opacity: 0.1;
+      line-height: 1;
+    }
+
+    .method-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .method-icon svg { width: 24px; height: 24px; stroke: white; fill: none; }
+
+    .method h3 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .method p {
+      color: var(--text-secondary);
+      line-height: 1.85;
+      font-size: 0.95rem;
+    }
+
+    .highlight-box {
+      background: var(--surface-alt);
+      border-left: 3px solid var(--primary);
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    /* Summary */
+    .summary {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+
+    .summary h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .summary p {
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+      line-height: 1.8;
+    }
+
+    .takeaway {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 1rem 2.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 30px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .method { padding: 1.5rem; }
+      .method-number { font-size: 2.5rem; }
+      .hero-meta { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="hero-tag">示例文章</span>
+    <h1>这是一篇<span class="highlight">蓝白商务</span>风格文章</h1>
+    <p class="hero-subtitle">展示 Video to Article 生成的蓝白商务风格排版效果，专业简洁，适合商务场景</p>
+    <div class="scroll-hint">
+      <span>开始阅读</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </header>
+
+  <article class="container">
+    <section class="intro reveal">
+      <p>这是示例文章的引言部分。首字会自动下沉并着色，营造编辑感强的视觉效果。Video to Article 支持生成蓝白商务风格的文章，专为商务场景设计。</p>
+      <br>
+      <p>蓝白商务风格以专业蓝为主色调，搭配清爽的白色背景，适合商务报告、学习笔记等正式场景。</p>
+    </section>
+
+    <div class="quote-block reveal">
+      <blockquote>将视频内容转化为深度阅读体验，让知识沉淀更高效。</blockquote>
+      <cite>— Video to Article</cite>
+    </div>
+
+    <section class="section reveal">
+      <div class="section-header">
+        <span class="section-label">Feature</span>
+        <h2 class="section-title">核心功能</h2>
+      </div>
+
+      <div class="method">
+        <span class="method-number">01</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <h3>多平台视频支持</h3>
+        <p>支持 YouTube、Bilibili、Twitter/X、Vimeo 等主流视频平台，自动检测并下载字幕内容。</p>
+        <div class="highlight-box">
+          <p>使用 yt-dlp 作为后端，支持手动字幕和自动生成字幕，优先选择质量更高的字幕。</p>
+        </div>
+        <p>对于 B站视频会自动检测 CC 字幕；对于 YouTube 视频，支持多语言字幕选择。</p>
+      </div>
+
+      <div class="method">
+        <span class="method-number">02</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <h3>智能翻译与整理</h3>
+        <p>英文字幕自动翻译为流畅的中文，并根据内容自动整理为结构清晰的文章格式。</p>
+        <p>翻译不仅仅是字面转换，而是会根据上下文语境进行调整，使文章更加通顺易读。</p>
+      </div>
+
+      <div class="method">
+        <span class="method-number">03</span>
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>精美排版设计</h3>
+        <p>提供多种文章风格选择：蓝白商务、Notion深色、Claude风格、暗黑科技、极简现代。</p>
+        <div class="highlight-box">
+          <p>所有生成的 HTML 都支持响应式布局，在手机、平板、电脑上都能获得良好的阅读体验。</p>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <section class="summary reveal">
+    <h2>开始使用</h2>
+    <p>安装 yt-dlp（已内置），然后在 Claude Code 中输入视频链接，即可自动生成精美文章。</p>
+    <span class="takeaway">视频转文章，一键搞定</span>
+  </section>
+
+  <footer class="footer">
+    <p>Generated by Video to Article Skill</p>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+          el.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+  </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notion深色风格 - Video to Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #191919;
+      --bg-surface: #202020;
+      --bg-elevated: #2f2f2f;
+      --border: #2e2e2e;
+      --hover: rgba(255, 255, 255, 0.055);
+      --text-primary: #e3e3e3;
+      --text-secondary: #9b9b9b;
+      --text-muted: #555555;
+      --accent-blue-text: #4a7ab5;
+      --accent-blue-bg: #0e1f3b;
+      --accent-green-text: #518c5a;
+      --accent-green-bg: #122215;
+      --accent-orange-text: #c07a3d;
+      --accent-orange-bg: #2e1e0f;
+      --font-serif: 'Noto Serif SC', Georgia, serif;
+      --font-sans: ui-sans-serif, -apple-system, system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .page {
+      max-width: 708px;
+      margin: 0 auto;
+      padding: 0 96px;
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 0 24px; }
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 2em;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-top: 80px;
+      margin-bottom: 8px;
+    }
+
+    .overline {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    .quote-block {
+      border-left: 3px solid var(--text-primary);
+      padding: 16px 24px;
+      margin: 32px 0;
+    }
+
+    .quote-block p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: normal;
+    }
+
+    h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5em;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-top: 48px;
+      margin-bottom: 8px;
+    }
+
+    .method {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .method-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .method-number {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      color: var(--accent-blue-text);
+      font-weight: 600;
+    }
+
+    .method h3 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .method p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-radius: 4px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .callout-blue {
+      background: var(--accent-blue-bg);
+    }
+
+    .callout-icon {
+      font-size: 16px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .callout p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .summary {
+      background: var(--bg-surface);
+      padding: 40px 32px;
+      margin: 48px -96px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    .summary p {
+      color: var(--text-secondary);
+      max-width: 400px;
+      margin: 16px auto 24px;
+      line-height: 1.7;
+    }
+
+    .takeaway {
+      display: inline-block;
+      background: var(--text-primary);
+      color: var(--bg-base);
+      padding: 12px 28px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 4px;
+    }
+
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <span class="overline">示例文章 · Notion 深色</span>
+    <h1>Notion 深色风格</h1>
+    <p class="hero-subtitle">展示 Video to Article 生成的 Notion 深色风格排版效果，简洁紧凑，适合夜间阅读</p>
+
+    <div class="quote-block reveal">
+      <p>将视频内容转化为深度阅读体验，让知识沉淀更高效。</p>
+      <cite>— Video to Article</cite>
+    </div>
+
+    <h2 class="reveal">核心功能</h2>
+
+    <div class="method reveal">
+      <div class="method-header">
+        <span class="method-number">01</span>
+        <h3>多平台视频支持</h3>
+      </div>
+      <p>支持 YouTube、Bilibili、Twitter/X、Vimeo 等主流视频平台，自动检测并下载字幕内容。</p>
+      <div class="callout callout-blue">
+        <span class="callout-icon">💡</span>
+        <p>使用 yt-dlp 作为后端，支持手动字幕和自动生成字幕，优先选择质量更高的字幕。</p>
+      </div>
+      <p>对于 B站视频会自动检测 CC 字幕；对于 YouTube 视频，支持多语言字幕选择。</p>
+    </div>
+
+    <div class="method reveal">
+      <div class="method-header">
+        <span class="method-number">02</span>
+        <h3>智能翻译与整理</h3>
+      </div>
+      <p>英文字幕自动翻译为流畅的中文，并根据内容自动整理为结构清晰的文章格式。</p>
+      <p>翻译不仅仅是字面转换，而是会根据上下文语境进行调整，使文章更加通顺易读。</p>
+    </div>
+
+    <div class="method reveal">
+      <div class="method-header">
+        <span class="method-number">03</span>
+        <h3>精美排版设计</h3>
+      </div>
+      <p>提供多种文章风格选择：蓝白商务、Notion深色、Claude风格、暗黑科技、极简现代。</p>
+      <div class="callout callout-blue">
+        <span class="callout-icon">💡</span>
+        <p>所有生成的 HTML 都支持响应式布局，在手机、平板、电脑上都能获得良好的阅读体验。</p>
+      </div>
+    </div>
+
+    <div class="summary reveal">
+      <h2>开始使用</h2>
+      <p>安装 yt-dlp（已内置），然后在 Claude Code 中输入视频链接，即可自动生成精美文章。</p>
+      <span class="takeaway">视频转文章，一键搞定</span>
+    </div>
+
+    <footer>
+      <p>Generated by Video to Article Skill</p>
+    </footer>
+  </div>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 80) {
+          el.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+  </script>
+</body>
+</html>
