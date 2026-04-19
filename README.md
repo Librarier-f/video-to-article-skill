@@ -57,7 +57,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/Librarier-f/video-to-article.git
+git clone https://github.com/Librarier-f/video-to-article-skill.git
 
 # 复制到 Claude Code skills 目录
 # Windows
